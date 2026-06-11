@@ -1,26 +1,122 @@
 @import "tailwindcss";
 
+/*
+  NOVA OFFICIAL — Design tokens
+  Derived from docs/DESIGN.MD (Starbucks-inspired system):
+  warm-cream canvas, four-tier green, pill buttons, layered whisper shadows,
+  color-block rhythm (no gradients), gold reserved for reward ceremony.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f0eb;
+  --foreground: rgba(0, 0, 0, 0.87);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Surfaces */
+  --color-canvas: #f2f0eb;
+  --color-ceramic: #edebe9;
+  --color-card: #ffffff;
+  --color-cool: #f9f9f9;
+
+  /* Four-tier green */
+  --color-brand: #006241; /* headings / brand signal */
+  --color-accent: #00754a; /* filled CTAs, Frap button */
+  --color-house: #1e3932; /* dark bands, footer, sidebar */
+  --color-uplift: #2b5148; /* decorative accents */
+  --color-mint: #d4e9e2; /* pale green tints */
+
+  /* Gold — reward/“Mitra Prioritas” ceremony only */
+  --color-gold: #cba258;
+  --color-gold-light: #dfc49d;
+  --color-gold-lightest: #faf6ee;
+
+  /* Text */
+  --color-ink: rgba(0, 0, 0, 0.87);
+  --color-ink-soft: rgba(0, 0, 0, 0.58);
+  --color-snow: rgba(255, 255, 255, 1);
+  --color-snow-soft: rgba(255, 255, 255, 0.7);
+
+  /* Semantic */
+  --color-danger: #c82014;
+  --color-warning: #fbbc05;
+
+  /* Type */
+  --font-sans: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Radius */
+  --radius-card: 12px;
+
+  /* Layered whisper shadows (never one heavy shadow) */
+  --shadow-card: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
+  --shadow-card-hover: 0 0 1px rgba(0, 0, 0, 0.14), 0 4px 10px rgba(0, 0, 0, 0.12);
+  --shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06),
+    0 0 2px rgba(0, 0, 0, 0.07);
+  --shadow-frap: 0 0 6px rgba(0, 0, 0, 0.24), 0 8px 12px rgba(0, 0, 0, 0.14);
+  --shadow-frap-active: 0 0 6px rgba(0, 0, 0, 0.24), 0 8px 12px rgba(0, 0, 0, 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Anchor targets clear the fixed navbar */
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* Signature press feedback — universal on buttons */
+@utility press {
+  transition: all 0.2s ease;
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/*
+  Scroll reveal — pure CSS, progressive enhancement.
+  Content is visible by default; browsers with scroll-driven
+  animations get a gentle entry as the element scrolls in.
+*/
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: reveal-in both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+
+::selection {
+  background: var(--color-mint, #d4e9e2);
+  color: #006241;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
