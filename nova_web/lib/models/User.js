@@ -35,7 +35,7 @@ User.init({
     allowNull: true, // Optional field for phone number
   },
   role: {
-    type: DataTypes.ENUM('member', 'affiliator', 'reseller', 'mitra_prioritas'),
+    type: DataTypes.ENUM('member', 'affiliator', 'reseller', 'mitra_prioritas', 'admin'),
     defaultValue: 'member',
     allowNull: false,
   },
@@ -52,12 +52,29 @@ User.init({
       key: 'id',
     },
   },
+  profile_picture: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  reset_token: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  reset_token_expiry: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
+  path: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   sequelize,
   modelName: 'User',
   tableName: 'users',
   timestamps: true,
   underscored: true,
+  paranoid: true,
 });
 
 export default User;

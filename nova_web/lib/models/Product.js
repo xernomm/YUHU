@@ -41,6 +41,7 @@ Product.init({
   tableName: 'products',
   timestamps: true,
   underscored: true,
+  paranoid: true,
 });
 
 export default Product;

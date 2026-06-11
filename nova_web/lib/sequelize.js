@@ -4,11 +4,15 @@ import { Sequelize } from 'sequelize';
 // which can create duplicate connections to the database.
 // Caching the Sequelize instance on the global object prevents this.
 
-const dbName = process.env.DB_NAME || 'nova';
-const dbUser = process.env.DB_USER || 'root';
-const dbPassword = process.env.DB_PASSWORD || 'rich0505';
-const dbHost = process.env.DB_HOST || '127.0.0.1';
-const dbPort = process.env.DB_PORT || 3306;
+const dbName = process.env.DB_NAME;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbHost = process.env.DB_HOST;
+const dbPort = process.env.DB_PORT;
+
+if (!dbName || !dbUser || !dbPassword || !dbHost || !dbPort) {
+  throw new Error('Database environment variables are missing.');
+}
 
 let sequelize;
 

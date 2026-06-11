@@ -5,6 +5,12 @@ import Product from './Product.js';
 import ProductMedia from './ProductMedia.js';
 import Order from './Order.js';
 import OrderItem from './OrderItem.js';
+import CommissionHistory from './CommissionHistory.js';
+import Wallet from './Wallet.js';
+import WalletLedger from './WalletLedger.js';
+import WithdrawalRequest from './WithdrawalRequest.js';
+
+
 
 // --- Associations Setup ---
 
@@ -71,6 +77,61 @@ OrderItem.belongsTo(Product, {
   as: 'product',
 });
 
+// 7. User & CommissionHistory (1-to-N)
+User.hasMany(CommissionHistory, {
+  foreignKey: 'user_id',
+  as: 'commissions',
+});
+CommissionHistory.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+// 8. Order & CommissionHistory (1-to-N)
+Order.hasMany(CommissionHistory, {
+  foreignKey: 'order_id',
+  as: 'commissions',
+});
+CommissionHistory.belongsTo(Order, {
+  foreignKey: 'order_id',
+  as: 'order',
+});
+
+// 9. User & Wallet (1-to-1)
+User.hasOne(Wallet, {
+  foreignKey: 'user_id',
+  as: 'wallet',
+  onDelete: 'CASCADE',
+});
+Wallet.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+// 10. Wallet & WalletLedger (1-to-N)
+Wallet.hasMany(WalletLedger, {
+  foreignKey: 'wallet_id',
+  as: 'ledgers',
+  onDelete: 'CASCADE',
+});
+WalletLedger.belongsTo(Wallet, {
+  foreignKey: 'wallet_id',
+  as: 'wallet',
+});
+
+// 11. User & WithdrawalRequest (1-to-N)
+User.hasMany(WithdrawalRequest, {
+  foreignKey: 'user_id',
+  as: 'withdrawals',
+  onDelete: 'CASCADE',
+});
+WithdrawalRequest.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
+
+
 // Export all models and the database connection instance
 export {
   sequelize,
@@ -80,4 +141,9 @@ export {
   ProductMedia,
   Order,
   OrderItem,
+  CommissionHistory,
+  Wallet,
+  WalletLedger,
+  WithdrawalRequest,
 };
+
